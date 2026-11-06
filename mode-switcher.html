@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>模式切换 · Mode Switcher</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'sans-serif'],
+        },
+      },
+    },
+  }
+</script>
+</head>
+<body class="font-sans bg-[#F5F7FA] text-slate-800 antialiased min-h-screen flex items-center justify-center p-8">
+
+  <!-- ================= 模式切换工具栏 ================= -->
+  <div class="flex items-center gap-3">
+    <!-- Label -->
+    <span class="text-sm text-slate-500 shrink-0">模式</span>
+
+    <!-- 胶囊分段控制器 -->
+    <div class="flex items-center gap-1 bg-slate-100 rounded-full p-1" id="modeSeg">
+
+      <button
+        type="button"
+        class="mode-tab flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-300 text-slate-500 hover:text-slate-700 bg-white font-semibold text-blue-600 shadow-sm ring-1 ring-slate-200"
+        data-active="true">
+        默认
+        <span class="mode-badge rounded-full px-2 py-0.5 text-xs bg-blue-50 text-blue-600">106</span>
+      </button>
+
+      <button
+        type="button"
+        class="mode-tab flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-300 text-slate-500 hover:text-slate-700"
+        data-active="false">
+        编码
+        <span class="mode-badge rounded-full px-2 py-0.5 text-xs bg-slate-200 text-slate-500">106</span>
+      </button>
+
+      <button
+        type="button"
+        class="mode-tab flex items-center gap-1.5 px-4 py-1.5 rounded-full transition-all duration-300 text-slate-500 hover:text-slate-700"
+        data-active="false">
+        搜索
+        <span class="mode-badge rounded-full px-2 py-0.5 text-xs bg-slate-200 text-slate-500">106</span>
+      </button>
+
+    </div>
+
+    <!-- 添加按钮 -->
+    <button
+      type="button"
+      class="flex items-center gap-0.5 px-2.5 py-1.5 rounded-lg text-sm text-slate-500 transition-all duration-300 hover:text-blue-600 hover:bg-slate-100">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+      模式
+    </button>
+  </div>
+
+<script>
+  const SELECTED_TAB = [
+    'bg-white', 'font-semibold', 'text-blue-600', 'shadow-sm', 'ring-1', 'ring-slate-200',
+  ];
+  const UNSELECTED_TAB = ['text-slate-500'];
+  const SELECTED_BADGE = ['bg-blue-50', 'text-blue-600'];
+  const UNSELECTED_BADGE = ['bg-slate-200', 'text-slate-500'];
+
+  const seg = document.getElementById('modeSeg');
+  seg.addEventListener('click', (e) => {
+    const tab = e.target.closest('.mode-tab');
+    if (!tab) return;
+    seg.querySelectorAll('.mode-tab').forEach((t) => {
+      const badge = t.querySelector('.mode-badge');
+      t.dataset.active = 'false';
+      t.classList.remove(...SELECTED_TAB, 'hover:text-slate-700');
+      t.classList.add(...UNSELECTED_TAB, 'hover:text-slate-700');
+      badge.classList.remove(...SELECTED_BADGE);
+      badge.classList.add(...UNSELECTED_BADGE);
+    });
+    const badge = tab.querySelector('.mode-badge');
+    tab.dataset.active = 'true';
+    tab.classList.remove(...UNSELECTED_TAB);
+    tab.classList.add(...SELECTED_TAB);
+    badge.classList.remove(...UNSELECTED_BADGE);
+    badge.classList.add(...SELECTED_BADGE);
+  });
+</script>
+
+</body>
+</html>

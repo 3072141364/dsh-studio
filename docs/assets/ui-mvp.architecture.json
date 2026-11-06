@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "dsh-studio · Skill 管理 · 界面 MVP",
+    "subtitle": "v1 · 技能管理面板",
+    "output": "ui-mvp.html",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "views": [
+      { "id": "main-loop", "label": "主闭环", "focus": ["sidebar", "panel-header", "filter-bar", "card-grid", "card", "dsh-skills"], "note": "从侧栏呼出面板到开关落盘的完整路径。" },
+      { "id": "scan-and-install", "label": "扫描与安装", "focus": ["agent-sources", "card-grid", "install-dialog", "dsh-skills"], "note": "只读扫描各 agent 目录，安装/导入落软链。" }
+    ]
+  },
+  "components": [
+    { "id": "sidebar", "type": "frontend", "label": "左侧栏", "sublabel": "「插件」下新增「技能」按钮", "pos": [40, 240], "size": [150, 84] },
+    { "id": "panel-header", "type": "frontend", "label": "面板头部", "sublabel": "模式切换 · ＋安装 · ⟳刷新", "pos": [320, 100], "size": [170, 72] },
+    { "id": "filter-bar", "type": "frontend", "label": "标签 / 过滤栏", "sublabel": "来源标签 · 分组 · 搜索 · 状态", "pos": [320, 250], "size": [170, 72] },
+    { "id": "card-grid", "type": "frontend", "label": "技能卡片网格", "sublabel": "按来源与分组展示", "pos": [320, 400], "size": [170, 72] },
+    { "id": "card", "type": "frontend", "label": "技能卡片", "sublabel": "名称 · 描述 · 来源 · 开关/卸载", "pos": [570, 400], "size": [175, 84], "tag": "开关 = 软链" },
+    { "id": "install-dialog", "type": "frontend", "label": "安装弹层", "sublabel": "git · GitHub · 本地目录", "pos": [570, 100], "size": [160, 72] },
+    { "id": "agent-sources", "type": "external", "label": "各 Agent 技能目录", "sublabel": "claude · omp · pi · opencode · codex", "pos": [40, 500], "size": [185, 84] },
+    { "id": "dsh-skills", "type": "database", "label": "~/.dsh/skills", "sublabel": "软链落盘 · DSH 自动热载", "pos": [810, 400], "size": [165, 84] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "DSH Web GUI — dsh-studio 工作台", "wraps": ["sidebar", "panel-header", "filter-bar", "card-grid", "card", "install-dialog"] }
+  ],
+  "connections": [
+    { "id": "open-panel", "from": "sidebar", "to": "panel-header", "label": "技能按钮呼出", "variant": "emphasis" },
+    { "id": "header-to-filter", "from": "panel-header", "to": "filter-bar" },
+    { "id": "filter-to-grid", "from": "filter-bar", "to": "card-grid", "label": "筛选 / 检索", "labelDy": 24 },
+    { "id": "render-card", "from": "card-grid", "to": "card", "label": "渲染卡片" },
+    { "id": "scan", "from": "agent-sources", "to": "card-grid", "label": "只读扫描 · 打来源标签", "variant": "dashed", "labelAt": [273, 490] },
+    { "id": "toggle", "from": "card", "to": "dsh-skills", "label": "开关 = 软链增删", "variant": "dashed", "labelAt": [690, 510] },
+    { "id": "install", "from": "install-dialog", "to": "dsh-skills", "label": "安装 = 软链导入", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "入口", "items": ["侧栏「技能」按钮呼出技能管理面板"] },
+    { "dot": "emerald", "title": "闭环", "items": ["扫描 → 卡片 → 开关/安装 → ~/.dsh/skills → 下一回合自动生效"] },
+    { "dot": "rose", "title": "v1 范围", "items": ["扫描 · 卡片 · 分组 · 开关 · 安装；模式(F4)与对话提示(F6)留 v2"] }
+  ]
+}

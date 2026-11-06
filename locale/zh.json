@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "技能",
+    "description": "管理各 agent 的技能：扫描、启停、分组与安装。"
+  }
+}
